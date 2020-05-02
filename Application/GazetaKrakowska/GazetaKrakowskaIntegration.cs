@@ -56,14 +56,14 @@ namespace Application.GazetaKrakowska
             Offers = GetOffersFromSinglePage(firstPageAddress);
             int pageNumber = 1;
             int count = Offers.Count;
-/*            while (count > 0)
+            while (count > 0)
             {
                 pageNumber++;
                 string nextAddress = ChangeAddressPage(pageNumber);
                 List<GazetaKrakowskaOffer> singlePageOffers = GetOffersFromSinglePage(nextAddress);
                 Offers.AddRange(singlePageOffers);
                 count = singlePageOffers.Count;
-            }*/
+            }
         }
         private string ChangeAddressPage(int pageNumber)
         {
