@@ -19,7 +19,7 @@
         public string StreetName { get; set; }
 
         /// <summary>
-        /// Numer budynku/mieszkania
+        /// Numer pocztowy
         /// </summary>
         public string DetailedAddress { get; set; }
     }

@@ -10,7 +10,7 @@
         /// <summary>
         /// Cena przypadająca na jeden metr powierchni mieszkalnej
         /// </summary>
-        public decimal PricePerMeter { get; set; }
+        public decimal? PricePerMeter { get; set; }
 
         /// <summary>
         /// Szacowany koszt miesięcznych opłat.
