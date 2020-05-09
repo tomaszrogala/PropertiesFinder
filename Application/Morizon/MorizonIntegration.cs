@@ -249,7 +249,6 @@ namespace Application.Classes {
         List<Entry> getEntries(string Url, string UrlPath, List<Entry> Entries) {
             var Web = new HtmlWeb();
             var Doc = Web.Load(Url + UrlPath);
-            Console.WriteLine(UrlPath); // TODO
 
             string NextUrl = Doc.DocumentNode.SelectSingleNode(".//*[contains(@title,'następna strona')]")?.Attributes["href"]?.Value;
 
@@ -260,7 +259,6 @@ namespace Application.Classes {
             }
 
             foreach ( string PropertyUrl in PropertiesUrls ) {
-                Console.WriteLine(PropertyUrl); // TODO
                 var Property = Web.Load(PropertyUrl).DocumentNode;
 
                 var Description = Property.SelectSingleNode("//div[@class='description']")?.InnerText;
