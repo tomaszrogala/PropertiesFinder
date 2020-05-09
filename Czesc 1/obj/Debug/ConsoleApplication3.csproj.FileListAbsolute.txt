@@ -1,0 +1,10 @@
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\bin\Debug\ConsoleApplication3.exe.config
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\bin\Debug\ConsoleApplication3.exe
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\bin\Debug\ConsoleApplication3.pdb
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\bin\Debug\HtmlAgilityPack.dll
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\bin\Debug\HtmlAgilityPack.pdb
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\bin\Debug\HtmlAgilityPack.xml
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\obj\Debug\ConsoleApplication3.csprojResolveAssemblyReference.cache
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\obj\Debug\ConsoleApplication3.exe
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\obj\Debug\ConsoleApplication3.pdb
+c:\users\rogal\documents\visual studio 2015\Projects\ConsoleApplication3\ConsoleApplication3\bin\Debug\Newtonsoft.Json.dll
