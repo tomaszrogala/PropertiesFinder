@@ -363,15 +363,15 @@ namespace Bazos
             descListElement = descListElement + 1;
             for (int j = 0; j <= 3; j++)
             {
-                string tempString = ChangePolishCharacters(descList[descListElement]);
-                if (tempString == "M")
+                string stringFromDesc = ChangePolishCharacters(descList[descListElement]);
+                if (stringFromDesc == "M")
                 {
                     if (descList[descListElement - 1].All(char.IsDigit))
                         info[dictName] = descList[descListElement - 1];
                 }
-                else if (tempString.EndsWith("M"))
+                else if (stringFromDesc.EndsWith("M"))
                 {
-                    var substring = tempString.Substring(0, tempString.Length - 1);
+                    var substring = stringFromDesc.Substring(0, stringFromDesc.Length - 1);
                     if (substring.All(char.IsDigit))
                         info[dictName] = substring;
                 }
