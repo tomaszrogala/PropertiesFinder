@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Reflection;
 
-namespace Application.Sample
+namespace Bazos
 {
     public class BazosIntegration : IWebSiteIntegration
     {
@@ -19,9 +19,7 @@ namespace Application.Sample
          * - Miasto z numerem pocztowym
          * 
          * Reszta informacji może zawierać się jedynie w opisie ogłoszenia, ale nie musi
-         * W związku z tym model został dostosowany do strony bazos.pl - niektóre zmienne zostały zamienione na nullowalne
          * 
-         * Dodałem również miasto "NIEZNANY" w razie gdyby miasto podane przez właściciela nie znajdowało się na liście
          * 
          * W BazosIntergation w pierwszej kolejności dodaję do listy wszelkie linki do poszczególnych ofert (z Mieszkanie - Sprzedam oraz Mieszkanie - Wynajmę)
          * W InfoExtracter wpisuję do słownika wszelkie informacje jakie udaje mi się wyłapać z oferty
@@ -85,9 +83,10 @@ namespace Application.Sample
                 InfoExtracter.ExtractInfoFromPropertyPage(info, doc);
                 decimal ppm;
                 PolishCity city;
-
                 var dateStr = info["CreationDateTime"];
                 var dateDT = DateTime.Parse(dateStr);
+
+                OfferKind offer;
 
                 if (Enum.IsDefined(typeof(PolishCity), info["City"]))
                 {
@@ -95,7 +94,7 @@ namespace Application.Sample
                 }
                 else
                 {
-                    city = 0;
+                    continue;
                 }
 
                 if (info["Area"] != "-1")
@@ -106,8 +105,6 @@ namespace Application.Sample
                 {
                     ppm = 0;
                 }
-
-                OfferKind offer;
                 if (info["Rental"] == "WYNAJEM")
                 {
                     offer = OfferKind.RENTAL;
@@ -123,7 +120,7 @@ namespace Application.Sample
                     OfferDetails = new OfferDetails
                     {
                         Url = page,
-                        CreationDateTime = dateDT, 
+                        CreationDateTime = dateDT,
                         LastUpdateDateTime = null, //Strona bazos nie zawiera informacji o aktualizacji ogłoszenia 
                         OfferKind = offer,
                         SellerContact = new SellerContact
@@ -186,12 +183,13 @@ namespace Application.Sample
                         propertyInfo.SetValue(entry, null);
                     prop = propertyInfo.GetValue(entry);
                 }
-                else if (propertyInfo.PropertyType == typeof(decimal) || propertyInfo.PropertyType == typeof(decimal?) || propertyInfo.PropertyType == typeof(int) || propertyInfo.PropertyType == typeof(int?))
+                else if ( propertyInfo.PropertyType == typeof(decimal?) ||  propertyInfo.PropertyType == typeof(int?))
                 {
                     if (prop.ToString() == "-1")
                         propertyInfo.SetValue(entry, null);
                 }
-                else if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(OfferKind) || propertyInfo.PropertyType == typeof(PolishCity))
+                else if (propertyInfo.PropertyType == typeof(decimal) || propertyInfo.PropertyType == typeof(int) || propertyInfo.PropertyType == typeof(DateTime) || 
+                        propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(OfferKind) || propertyInfo.PropertyType == typeof(PolishCity))
                     continue;
                 else
                 {
@@ -236,7 +234,7 @@ namespace Application.Sample
             string tempPageNumber = pageNumberInfo[1].Replace(" Wyświetlono 1-20 ogłoszeń z ", string.Empty);
             tempPageNumber = tempPageNumber.Replace(" ", string.Empty);
             var pageNumber = Convert.ToInt32(tempPageNumber) / 20;
-            for (int i = 0; i < pageNumber + 1; i++)
+            for (int i = 0; i < 1; i++)//pageNumber +
             {
                 HtmlWeb webNew = new HtmlWeb();
                 HtmlDocument docNew = webNew.Load(url + i*20 + "/");

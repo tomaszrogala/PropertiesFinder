@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Sockets;
 
-namespace Application.Sample
+namespace Bazos
 {
     public class BazosComparer : IEqualityComparer<Entry>
     {

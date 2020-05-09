@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Application.Sample
+namespace Bazos
 {
     class InfoExtracter
     {
@@ -63,8 +64,8 @@ namespace Application.Sample
                 {
                     info["GardenArea"] = "1";
                     string dictName = "GardenArea";
-                    int tempInt = i;
-                    CheckArea(info, descList, dictName, tempInt);
+                    int descListElement = i;
+                    CheckArea(info, descList, dictName, descListElement);
                 }
                 //Balconies
                 else if (currentString.Contains("BALKON"))
@@ -78,32 +79,32 @@ namespace Application.Sample
                 {
                     info["BasementArea"] = "1";
                     string dictName = "BasementArea";
-                    int tempInt = i;
-                    CheckArea(info, descList, dictName, tempInt);
+                    int descListElement = i;
+                    CheckArea(info, descList, dictName, descListElement);
                 }
                 //OutdoorParkingPlaces
                 else if (currentString.Contains("PARKING") || currentString.Contains("POSTOJ"))
                 {
                     string parkingPlace = "a";
-                    int tempInt = i;
+                    int descListElement = i;
                     if (ChangePolishCharacters(descList[i - 1]).Contains("PODZIEMNY"))
                     {
                         info["IndoorParkingPlaces"] = "1";
-                        tempInt = i - 1;
+                        descListElement = i - 1;
                         parkingPlace = "IndoorParkingPlaces";
-                        NumberOfParkingPlaces(info, descList, tempInt, parkingPlace); //Sprawdzam kilka wyrazów wstecz o ilość miejsc parkingowych
+                        NumberOfParkingPlaces(info, descList, descListElement, parkingPlace); //Sprawdzam kilka wyrazów wstecz o ilość miejsc parkingowych
                     }
                     else if (ChangePolishCharacters(descList[i + 1]).Contains("PODZIEMNY"))
                     {
                         info["IndoorParkingPlaces"] = "1";
                         parkingPlace = "IndoorParkingPlaces";
-                        NumberOfParkingPlaces(info, descList, tempInt, parkingPlace);
+                        NumberOfParkingPlaces(info, descList, descListElement, parkingPlace);
                     }
                     else
                     {
                         info["OutdoorParkingPlaces"] = "1";
                         parkingPlace = "OutdoorParkingPlaces";
-                        NumberOfParkingPlaces(info, descList, tempInt, parkingPlace);
+                        NumberOfParkingPlaces(info, descList, descListElement, parkingPlace);
                     }
                 }
                 //IndoorParkingPlaces
@@ -117,9 +118,22 @@ namespace Application.Sample
                 else if (currentString == "UL")
                 {
                     info["StreetName"] = descList[i + 1];
+                    if(i+2<descList.Count-1)
+                    {
+                        if (descList[i + 2].Any(Char.IsDigit))
+                            info["DetailedAddress"] =ChangePolishCharacters(descList[i + 2]) + ", " + info["DetailedAddress"];
+                    }
                 }
                 //Area
                 else if (currentString == "M" && !areaInfo)
+                {
+                    if (descList[i - 1].All(char.IsDigit))
+                    {
+                        info["Area"] = descList[i - 1];
+                        areaInfo = true;
+                    }
+                }
+                else if (currentString.Contains("MKW") && !areaInfo)
                 {
                     if (descList[i - 1].All(char.IsDigit))
                     {
@@ -329,31 +343,31 @@ namespace Application.Sample
             }
         }
 
-        private static void NumberOfParkingPlaces(Dictionary<string, string> info, List<string> descList, int tempInt, string parkingPlace)
+        private static void NumberOfParkingPlaces(Dictionary<string, string> info, List<string> descList, int descListElement, string parkingPlace)
         {
             for (int j = 0; j < 2; j++)
             {
-                tempInt = tempInt - 1;
-                if (ChangePolishCharacters(descList[tempInt]).Contains("MIEJSC"))
+                descListElement = descListElement - 1;
+                if (ChangePolishCharacters(descList[descListElement]).Contains("MIEJSC"))
                 {
-                    if (descList[tempInt - 1].All(char.IsDigit))
+                    if (descList[descListElement - 1].All(char.IsDigit))
                     {
-                        info[parkingPlace] = descList[tempInt - 1];
+                        info[parkingPlace] = descList[descListElement - 1];
                     }
                 }
             }
         }
 
-        private static void CheckArea(Dictionary<string, string> info, List<string> descList, string dictName, int tempInt) //Sprawdzam czy znajde wielkosc pomieszczenia wokol slowa klucza
+        private static void CheckArea(Dictionary<string, string> info, List<string> descList, string dictName, int descListElement) //Sprawdzam czy znajde wielkosc pomieszczenia wokol slowa klucza
         {
-            tempInt = tempInt + 1;
+            descListElement = descListElement + 1;
             for (int j = 0; j <= 3; j++)
             {
-                string tempString = ChangePolishCharacters(descList[tempInt]);
+                string tempString = ChangePolishCharacters(descList[descListElement]);
                 if (tempString == "M")
                 {
-                    if (descList[tempInt - 1].All(char.IsDigit))
-                        info[dictName] = descList[tempInt - 1];
+                    if (descList[descListElement - 1].All(char.IsDigit))
+                        info[dictName] = descList[descListElement - 1];
                 }
                 else if (tempString.EndsWith("M"))
                 {
@@ -361,7 +375,7 @@ namespace Application.Sample
                     if (substring.All(char.IsDigit))
                         info[dictName] = substring;
                 }
-                tempInt--;
+                descListElement--;
             }
         }
     }
