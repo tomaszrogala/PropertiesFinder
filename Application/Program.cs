@@ -6,9 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Utilities;
+using HtmlAgilityPack;
 
 namespace SampleApp
 {
+    
     class Program
     {
         static void Main()
@@ -39,7 +41,7 @@ namespace SampleApp
                 {
                     //Załaduj całego dumpa z pamięci wraz z ofertami
                     var oldDump = webSiteIngegration.DumpsRepository.GetDump(oldDumpDetails);
-
+                    Console.WriteLine(oldDump);
                     //Znajdź wszystkie oferty w starych dumpach których nie ma w nowym dumpie...
                     foreach (var closedEntry in oldDump.Entries.Where(_ => _.OfferDetails.IsStillValid == true)
                         .Except(
@@ -75,4 +77,5 @@ namespace SampleApp
                   && type.GetTypeInfo().IsClass);
         }
     }
+    
 }

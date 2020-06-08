@@ -8,14 +8,22 @@ namespace Application.Sample
     {
         public bool Equals(Entry x, Entry y)
         {
-            if (x.OfferDetails.Url.Equals(y.OfferDetails.Url))
+            if (GetHashCode(x) == GetHashCode(y)) {
                 return true;
-            return false;
+            }
+            else {
+                return false;
+            }
         }
 
         public int GetHashCode([DisallowNull] Entry obj)
         {
-            return obj.OfferDetails.Url == null ? 0 : obj.OfferDetails.Url.GetHashCode();
+            var hashCode = $"{obj.PropertyDetails.NumberOfRooms}" +
+                $"{obj.PropertyAddress.City}" +
+                $"{obj.PropertyDetails.Area}" +
+                $"{obj.OfferDetails.Url}" +
+                $"{obj.PropertyPrice.TotalGrossPrice}";
+            return hashCode.GetHashCode();
         }
     }
 }
